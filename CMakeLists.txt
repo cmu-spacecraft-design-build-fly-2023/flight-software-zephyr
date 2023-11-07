@@ -9,7 +9,7 @@ cmake_policy(SET CMP0048 NEW)
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 set(CMAKE_SYSTEM_NAME "Zephyr")
 
-project(fprime-zephyr-led-blinker C CXX)
+project(flight-software-zerphyr C CXX)
 
 ###
 # F' Core Setup

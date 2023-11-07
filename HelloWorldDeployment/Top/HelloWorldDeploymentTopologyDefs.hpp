@@ -1,33 +1,31 @@
 // ======================================================================
-// \title  LedBlinkerTopologyDefs.hpp
+// \title  HelloWorldDeploymentTopologyDefs.hpp
 // \brief required header file containing the required definitions for the topology autocoder
 //
 // ======================================================================
-#ifndef LEDBLINKER_LEDBLINKERTOPOLOGYDEFS_HPP
-#define LEDBLINKER_LEDBLINKERTOPOLOGYDEFS_HPP
+#ifndef HelloWorldDeployment_HelloWorldDeploymentTOPOLOGYDEFS_HPP
+#define HelloWorldDeployment_HelloWorldDeploymentTOPOLOGYDEFS_HPP
 
+#include "Drv/BlockDriver/BlockDriver.hpp"
 #include "Fw/Types/MallocAllocator.hpp"
-#include "LedBlinker/Top/FppConstantsAc.hpp"
+#include "HelloWorldDeployment/Top/FppConstantsAc.hpp"
 #include "Svc/FramingProtocol/FprimeProtocol.hpp"
-
-#include <zephyr/kernel.h>
-#include <zephyr/device.h>
-#include <zephyr/drivers/uart.h>
+#include "Svc/Health/Health.hpp"
 
 // Definitions are placed within a namespace named after the deployment
-namespace LedBlinker {
+namespace HelloWorldDeployment {
 
 /**
  * \brief required type definition to carry state
  *
- * The topology autocoder requires an object that carries state with the name `LedBlinker::TopologyState`. Only the type
+ * The topology autocoder requires an object that carries state with the name `HelloWorldDeployment::TopologyState`. Only the type
  * definition is required by the autocoder and the contents of this object are otherwise opaque to the autocoder. The
  * contents are entirely up to the definition of the project. This reference application specifies hostname and port
  * fields, which are derived by command line inputs.
  */
 struct TopologyState {
-    const struct device *dev;
-    PlatformIntType uartBaud;
+    const char* hostname;
+    U32 port;
 };
 
 /**
@@ -50,18 +48,42 @@ struct TopologyState {
  * ```
  */
 namespace PingEntries {
+namespace blockDrv {
+enum { WARN = 3, FATAL = 5 };
+}
 namespace tlmSend {
 enum { WARN = 3, FATAL = 5 };
 }
 namespace cmdDisp {
 enum { WARN = 3, FATAL = 5 };
 }
+namespace cmdSeq {
+enum { WARN = 3, FATAL = 5 };
+}
 namespace eventLogger {
+enum { WARN = 3, FATAL = 5 };
+}
+namespace fileDownlink {
+enum { WARN = 3, FATAL = 5 };
+}
+namespace fileManager {
+enum { WARN = 3, FATAL = 5 };
+}
+namespace fileUplink {
+enum { WARN = 3, FATAL = 5 };
+}
+namespace prmDb {
 enum { WARN = 3, FATAL = 5 };
 }
 namespace rateGroup1 {
 enum { WARN = 3, FATAL = 5 };
 }
+namespace rateGroup2 {
+enum { WARN = 3, FATAL = 5 };
+}
+namespace rateGroup3 {
+enum { WARN = 3, FATAL = 5 };
+}
 }  // namespace PingEntries
-}  // namespace LedBlinker
+}  // namespace HelloWorldDeployment
 #endif

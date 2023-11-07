@@ -1,17 +1,17 @@
 // ======================================================================
-// \title  LedBlinkerTopology.hpp
+// \title  HelloWorldDeploymentTopology.hpp
 // \brief header file containing the topology instantiation definitions
 //
 // ======================================================================
-#ifndef LEDBLINKER_LEDBLINKERTOPOLOGY_HPP
-#define LEDBLINKER_LEDBLINKERTOPOLOGY_HPP
-// Included for access to LedBlinker::TopologyState and LedBlinker::ConfigObjects::pingEntries. These definitions are required by the
+#ifndef HelloWorldDeployment_HelloWorldDeploymentTOPOLOGY_HPP
+#define HelloWorldDeployment_HelloWorldDeploymentTOPOLOGY_HPP
+// Included for access to HelloWorldDeployment::TopologyState and HelloWorldDeployment::ConfigObjects::pingEntries. These definitions are required by the
 // autocoder, but are also used in this hand-coded topology.
-#include <LedBlinker/Top/LedBlinkerTopologyDefs.hpp>
+#include <HelloWorldDeployment/Top/HelloWorldDeploymentTopologyDefs.hpp>
 
-// Remove unnecessary LedBlinker:: qualifications
-using namespace LedBlinker;
-namespace LedBlinker {
+// Remove unnecessary HelloWorldDeployment:: qualifications
+using namespace HelloWorldDeployment;
+namespace HelloWorldDeployment {
 /**
  * \brief initialize and run the F´ topology
  *
@@ -32,7 +32,7 @@ namespace LedBlinker {
  * custom tasks often start radio communication it is convenient to start them last.
  *
  * The state argument carries command line inputs used to setup the topology. For an explanation of the required type
- * LedBlinker::TopologyState see: LedBlinkerTopologyDefs.hpp.
+ * HelloWorldDeployment::TopologyState see: HelloWorldDeploymentTopologyDefs.hpp.
  *
  * \param state: object shuttling CLI arguments (hostname, port) needed to construct the topology
  */
@@ -53,12 +53,34 @@ void setupTopology(const TopologyState& state);
  * Step 1, 2, 3, and 4 must occur in-order as the tasks must be stopped before being joined. These tasks must be stopped
  * and joined before any active resources may be deallocated.
  *
- * For an explanation of the required type LedBlinker::TopologyState see: LedBlinkerTopologyDefs.hpp.
+ * For an explanation of the required type HelloWorldDeployment::TopologyState see: HelloWorldDeploymentTopologyDefs.hpp.
  *
  * \param state: state object provided to setupTopology
  */
 void teardownTopology(const TopologyState& state);
 
-} // namespace LedBlinker
+/**
+ * \brief cycle the rate group driver at a crude rate
+ *
+ * The reference topology does not have a true 1Hz input clock for the rate group driver because it is designed to
+ * operate across various computing endpoints (e.g. laptops) where a clear 1Hz source may not be easily and generically
+ * achieved. This function mimics the cycling via a Task::delay(milliseconds) loop that manually invokes the ISR call
+ * to the example block driver.
+ *
+ * This loop is stopped via a startSimulatedCycle call.
+ *
+ * Note: projects should replace this with a component that produces an output port call at the appropriate frequency.
+ *
+ * \param milliseconds: milliseconds to delay for each cycle. Default: 1000 or 1Hz.
+ */
+void startSimulatedCycle(U32 milliseconds = 1000);
 
+/**
+ * \brief stop the simulated cycle started by startSimulatedCycle
+ *
+ * This stops the cycle started by startSimulatedCycle.
+ */
+void stopSimulatedCycle();
+
+} // namespace HelloWorldDeployment
 #endif
