@@ -13,10 +13,8 @@ set(SOURCE_FILES
 )
 set(MOD_DEPS
   Fw/Logger
-  Svc/LinuxTime
-  # Communication Implementations
-  Drv/Udp
-  Drv/TcpClient
+  Zephyr/ZephyrTime
+  Zephyr/Drv/ZephyrUartDriver
 )
 
 register_fprime_module()

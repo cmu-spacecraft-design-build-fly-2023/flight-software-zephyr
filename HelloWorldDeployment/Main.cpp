@@ -4,8 +4,8 @@
 //
 // ======================================================================
 // Used to access topology functions
-#include <LedBlinker/Top/LedBlinkerTopologyAc.hpp>
-#include <LedBlinker/Top/LedBlinkerTopology.hpp>
+#include <HelloWorldDeployment/Top/HelloWorldDeploymentTopologyAc.hpp>
+#include <HelloWorldDeployment/Top/HelloWorldDeploymentTopology.hpp>
 
 // Used for logging
 #include <Os/Log.hpp>
