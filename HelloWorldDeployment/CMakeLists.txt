@@ -23,4 +23,4 @@ register_fprime_deployment()
 
 FILE(GLOB app_sources Main.cpp)
 target_sources(app PRIVATE ${app_sources})
-target_link_libraries(app PRIVATE LedBlinker_Top)
+target_link_libraries(app PRIVATE HelloWorldDeployment_Top)

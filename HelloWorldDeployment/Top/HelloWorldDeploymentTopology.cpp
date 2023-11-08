@@ -6,6 +6,7 @@
 // Provides access to autocoded functions
 #include <HelloWorldDeployment/Top/HelloWorldDeploymentTopologyAc.hpp>
 #include <HelloWorldDeployment/Top/HelloWorldDeploymentPacketsAc.hpp>
+#include <config/FppConstantsAc.hpp>
 
 // Necessary project-specified types
 #include <Fw/Types/MallocAllocator.hpp>

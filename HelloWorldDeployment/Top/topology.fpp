@@ -35,7 +35,8 @@ module HelloWorldDeployment {
     instance fileManager
     instance fileUplink
     instance fileUplinkBufferManager
-    instance linuxTime
+    # instance linuxTime
+    instance timeHandler
     instance prmDb
     instance rateGroup1
     instance rateGroup2
@@ -45,6 +46,22 @@ module HelloWorldDeployment {
     instance textLogger
     instance uplink
     instance systemResources
+
+    # instance cmdDisp
+    # instance commDriver
+    # instance deframer
+    # instance eventLogger
+    # instance fatalAdapter
+    # nstance fatalHandler
+    # instance framer
+    # instance rateDriver
+    # instance rateGroup1
+    # instance rateGroupDriver
+    # instance staticMemory
+    # instance systemResources
+    # instance textLogger
+    # instance timeHandler
+    # instance tlmSend
 
     instance helloWorld
 
@@ -56,15 +73,17 @@ module HelloWorldDeployment {
 
     event connections instance eventLogger
 
-    param connections instance prmDb
+    # param connections instance prmDb
 
     telemetry connections instance tlmSend
 
     text event connections instance textLogger
 
-    time connections instance linuxTime
+    time connections instance timeHandler
 
-    health connections instance $health
+    # health connections instance $health
+
+    
 
     # ----------------------------------------------------------------------
     # Direct graph specifiers

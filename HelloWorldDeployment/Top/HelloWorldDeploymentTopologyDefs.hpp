@@ -6,11 +6,13 @@
 #ifndef HelloWorldDeployment_HelloWorldDeploymentTOPOLOGYDEFS_HPP
 #define HelloWorldDeployment_HelloWorldDeploymentTOPOLOGYDEFS_HPP
 
-#include "Drv/BlockDriver/BlockDriver.hpp"
 #include "Fw/Types/MallocAllocator.hpp"
 #include "HelloWorldDeployment/Top/FppConstantsAc.hpp"
 #include "Svc/FramingProtocol/FprimeProtocol.hpp"
-#include "Svc/Health/Health.hpp"
+
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+#include <zephyr/drivers/uart.h>
 
 // Definitions are placed within a namespace named after the deployment
 namespace HelloWorldDeployment {

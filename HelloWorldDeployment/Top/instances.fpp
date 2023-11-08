@@ -104,6 +104,10 @@ module HelloWorldDeployment {
     type "Drv::TcpClient" \ # type specified to select implementor of ByteStreamDriverModel
     at "../../Drv/TcpClient/TcpClient.hpp" # location of above implementor must also be specified
 
+  instance timeHandler: Svc.Time base id 0x4B00 \
+    type "Svc::ZephyrTimeImpl" \
+    at "../../fprime-zephyr/Zephyr/ZephyrTime/ZephyrTimeImpl.hpp"
+
   instance downlink: Svc.Framer base id 0x4100
 
   instance fatalAdapter: Svc.AssertFatalAdapter base id 0x4200
@@ -112,9 +116,9 @@ module HelloWorldDeployment {
 
   instance fileUplinkBufferManager: Svc.BufferManager base id 0x4400
 
-  instance linuxTime: Svc.Time base id 0x4500 \
-    type "Svc::LinuxTime" \
-    at "../../Svc/LinuxTime/LinuxTime.hpp"
+#  instance linuxTime: Svc.Time base id 0x4500 \
+#    type "Svc::LinuxTime" \
+#    at "../../Svc/LinuxTime/LinuxTime.hpp"
 
   instance rateGroupDriver: Svc.RateGroupDriver base id 0x4600
 
