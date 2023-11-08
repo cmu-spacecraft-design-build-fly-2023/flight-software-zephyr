@@ -6,13 +6,12 @@ module HelloWorldDeployment {
 
     enum Ports_RateGroups {
       rateGroup1
-      rateGroup2
-      rateGroup3
     }
 
     enum Ports_StaticMemory {
-      downlink
-      uplink
+      framer
+      deframer
+      deframing
     }
 
   topology HelloWorldDeployment {
@@ -21,47 +20,23 @@ module HelloWorldDeployment {
     # Instances used in the topology
     # ----------------------------------------------------------------------
 
-    instance $health
-    instance blockDrv
-    instance tlmSend
     instance cmdDisp
-    instance cmdSeq
-    instance comm
-    instance downlink
+    instance commDriver
+    instance deframer
     instance eventLogger
     instance fatalAdapter
     instance fatalHandler
-    instance fileDownlink
-    instance fileManager
-    instance fileUplink
-    instance fileUplinkBufferManager
-    # instance linuxTime
-    instance timeHandler
-    instance prmDb
+    instance framer
+    # instance gpioDriver
+    # instance led
+    instance rateDriver
     instance rateGroup1
-    instance rateGroup2
-    instance rateGroup3
     instance rateGroupDriver
     instance staticMemory
-    instance textLogger
-    instance uplink
-    instance systemResources
-
-    # instance cmdDisp
-    # instance commDriver
-    # instance deframer
-    # instance eventLogger
-    # instance fatalAdapter
-    # nstance fatalHandler
-    # instance framer
-    # instance rateDriver
-    # instance rateGroup1
-    # instance rateGroupDriver
-    # instance staticMemory
     # instance systemResources
-    # instance textLogger
-    # instance timeHandler
-    # instance tlmSend
+    instance textLogger
+    instance timeHandler
+    instance tlmSend
 
     instance helloWorld
 
@@ -73,81 +48,56 @@ module HelloWorldDeployment {
 
     event connections instance eventLogger
 
-    # param connections instance prmDb
-
     telemetry connections instance tlmSend
 
     text event connections instance textLogger
 
     time connections instance timeHandler
 
-    # health connections instance $health
-
-    
-
     # ----------------------------------------------------------------------
     # Direct graph specifiers
     # ----------------------------------------------------------------------
 
-    connections Downlink {
+    connections RateGroups {
+      # Block driver
+      rateDriver.CycleOut -> rateGroupDriver.CycleIn
 
-      tlmSend.PktSend -> downlink.comIn
-      eventLogger.PktSend -> downlink.comIn
-      fileDownlink.bufferSendOut -> downlink.bufferIn
-
-      downlink.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.downlink]
-      downlink.framedOut -> comm.send
-      downlink.bufferDeallocate -> fileDownlink.bufferReturn
-
-      comm.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.downlink]
-
+      # Rate group 1
+      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup1] -> rateGroup1.CycleIn
+      rateGroup1.RateGroupMemberOut[0] -> commDriver.schedIn
+      rateGroup1.RateGroupMemberOut[1] -> tlmSend.Run
+      # rateGroup1.RateGroupMemberOut[2] -> systemResources.run
     }
 
     connections FaultProtection {
       eventLogger.FatalAnnounce -> fatalHandler.FatalReceive
     }
 
-    connections RateGroups {
-      # Block driver
-      blockDrv.CycleOut -> rateGroupDriver.CycleIn
+    connections Downlink {
 
-      # Rate group 1
-      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup1] -> rateGroup1.CycleIn
-      rateGroup1.RateGroupMemberOut[0] -> tlmSend.Run
-      rateGroup1.RateGroupMemberOut[1] -> fileDownlink.Run
-      rateGroup1.RateGroupMemberOut[2] -> systemResources.run
+      tlmSend.PktSend -> framer.comIn
+      eventLogger.PktSend -> framer.comIn
 
-      # Rate group 2
-      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup2] -> rateGroup2.CycleIn
-      rateGroup2.RateGroupMemberOut[0] -> cmdSeq.schedIn
+      framer.framedAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.framer]
+      framer.framedOut -> commDriver.send
 
-      # Rate group 3
-      rateGroupDriver.CycleOut[Ports_RateGroups.rateGroup3] -> rateGroup3.CycleIn
-      rateGroup3.RateGroupMemberOut[0] -> $health.Run
-      rateGroup3.RateGroupMemberOut[1] -> blockDrv.Sched
-      rateGroup3.RateGroupMemberOut[2] -> fileUplinkBufferManager.schedIn
+      commDriver.deallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.framer]
+
     }
-
-    connections Sequencer {
-      cmdSeq.comCmdOut -> cmdDisp.seqCmdBuff
-      cmdDisp.seqCmdStatus -> cmdSeq.cmdResponseIn
-    }
-
+    
     connections Uplink {
 
-      comm.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.uplink]
-      comm.$recv -> uplink.framedIn
-      uplink.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.uplink]
+      commDriver.allocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframer]
+      commDriver.$recv -> deframer.framedIn
+      deframer.framedDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframer]
 
-      uplink.comOut -> cmdDisp.seqCmdBuff
-      cmdDisp.seqCmdStatus -> uplink.cmdResponseIn
+      deframer.comOut -> cmdDisp.seqCmdBuff
+      cmdDisp.seqCmdStatus -> deframer.cmdResponseIn
 
-      uplink.bufferAllocate -> fileUplinkBufferManager.bufferGetCallee
-      uplink.bufferOut -> fileUplink.bufferSendIn
-      uplink.bufferDeallocate -> fileUplinkBufferManager.bufferSendIn
-      fileUplink.bufferSendOut -> fileUplinkBufferManager.bufferSendIn
+      deframer.bufferAllocate -> staticMemory.bufferAllocate[Ports_StaticMemory.deframing]
+      deframer.bufferDeallocate -> staticMemory.bufferDeallocate[Ports_StaticMemory.deframing]
+      
     }
-
     connections HelloWorldDeployment {
       # Add here connections to user-defined components
     }

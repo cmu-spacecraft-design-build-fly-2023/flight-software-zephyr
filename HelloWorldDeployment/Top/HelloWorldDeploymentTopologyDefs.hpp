@@ -26,8 +26,8 @@ namespace HelloWorldDeployment {
  * fields, which are derived by command line inputs.
  */
 struct TopologyState {
-    const char* hostname;
-    U32 port;
+    const struct device *dev;
+    PlatformIntType uartBaud;
 };
 
 /**
@@ -50,40 +50,16 @@ struct TopologyState {
  * ```
  */
 namespace PingEntries {
-namespace blockDrv {
-enum { WARN = 3, FATAL = 5 };
-}
 namespace tlmSend {
 enum { WARN = 3, FATAL = 5 };
 }
 namespace cmdDisp {
 enum { WARN = 3, FATAL = 5 };
 }
-namespace cmdSeq {
-enum { WARN = 3, FATAL = 5 };
-}
 namespace eventLogger {
 enum { WARN = 3, FATAL = 5 };
 }
-namespace fileDownlink {
-enum { WARN = 3, FATAL = 5 };
-}
-namespace fileManager {
-enum { WARN = 3, FATAL = 5 };
-}
-namespace fileUplink {
-enum { WARN = 3, FATAL = 5 };
-}
-namespace prmDb {
-enum { WARN = 3, FATAL = 5 };
-}
 namespace rateGroup1 {
-enum { WARN = 3, FATAL = 5 };
-}
-namespace rateGroup2 {
-enum { WARN = 3, FATAL = 5 };
-}
-namespace rateGroup3 {
 enum { WARN = 3, FATAL = 5 };
 }
 }  // namespace PingEntries
